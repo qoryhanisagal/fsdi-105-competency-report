@@ -67,3 +67,37 @@ p {
     padding: 10px;
     border-radius: 6px;
 }
+
+/* Ensure the table is well-spaced */
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+/* Table headers should stand out */
+th {
+    background-color: #000;
+    color: white;
+    padding: 10px;
+}
+
+/* Table rows should alternate in color */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Delete button styling */
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+/* Delete button hover effect */
+.btn-danger:hover {
+    background-color: #a71d2a;
+}

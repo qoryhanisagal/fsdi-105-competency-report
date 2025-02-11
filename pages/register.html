@@ -24,8 +24,13 @@
             <h2 class="text-center">Pet Registration Form</h2>
             <form id="petForm" class="row g-3">
                 <div class="col-md-6">
-                    <label for="petName" class="form-label">Pet Name:</label>
-                    <input type="text" id="petName" name="petName" class="form-control" required>
+                    <label for="petFirstName" class="form-label">Pet First Name:</label>
+                    <input type="text" id="petFirstName" name="petFirstName" class="form-control" required>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="petLastName" class="form-label">Pet Last Name:</label>
+                    <input type="text" id="petLastName" name="petLastName" class="form-control" required>
                 </div>
 
                 <div class="col-md-6">
@@ -66,9 +71,16 @@
                     </select>
                 </div>
 
+                <!-- Add Color Field to the Form -->
+                <div class="col-md-6">
+                    <label for="petColor" class="form-label">Color:</label>
+                    <input type="text" id="petColor" name="petColor" class="form-control" required>
+                </div>
+
                 <div class="col-12 text-center">
                     <button type="submit" class="btn btn-success">Register Pet</button>
                 </div>
+
             </form>
         </section>
 
@@ -81,17 +93,18 @@
             <table class="table table-striped table-bordered mt-3">
                 <thead class="table-dark">
                     <tr>
-                        <th>Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                         <th>Age</th>
                         <th>Gender</th>
                         <th>Breed</th>
                         <th>Service</th>
                         <th>Type</th>
+                        <th>Color</th>
+                        <th>Action</th> <!-- Delete button Column -->
                     </tr>
                 </thead>
-                <tbody id="petTableBody">
-                    <!-- Pets will be inserted here dynamically -->
-                </tbody>
+                <tbody id="petTableBody"></tbody>
             </table>
         </section>
     </main>

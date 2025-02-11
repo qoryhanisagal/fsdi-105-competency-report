@@ -2,23 +2,26 @@
  * I created a `Pet` constructor function to ensure that every pet object
  * follows the same structure. This allows me to easily create and manage new pets dynamically.
  */
-function Pet(name, age, gender, breed, service, type) {
-    this.name = name;
+function Pet(firstName, lastName, age, gender, breed, service, type, color) {
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.age = age;
     this.gender = gender;
     this.breed = breed;
     this.service = service;
-    this.type = type; // I included `type` so that I can classify pets as Dog, Cat, Bird, etc.
+    this.type = type;
+    this.color = color; // ✅ This stores the color
 }
+
 
 /**
  * I created an array called `pets` to store all registered pets.
  * Instead of manually writing pet objects, I use the `Pet` constructor to create them.
  */
 const pets = [
-    new Pet('Buddy', 3, 'Male', 'Golden Retriever', 'Grooming', 'Dog'),
-    new Pet('Mittens', 2, 'Female', 'Siamese Cat', 'Nail Clipping', 'Cat'),
-    new Pet('Rex', 5, 'Male', 'Bulldog', 'Bathing', 'Dog')
+    new Pet('Buddy', 'Smith', 3, 'Male', 'Golden Retriever', 'Grooming', 'Dog', 'Golden'), 
+    new Pet('Mittens', 'Johnson', 2, 'Female', 'Siamese Cat', 'Nail Clipping', 'Cat', 'White'),
+    new Pet('Rex', 'Brown', 5, 'Male', 'Bulldog', 'Bathing', 'Dog', 'Brown')
 ];
 
 /**
@@ -38,12 +41,15 @@ function displayRow() {
 
         // Creating a row using template literals for cleaner HTML insertion.
         const row = `<tr>
-            <td>${pet.name}</td>
+            <td>${pet.firstName}</td>
+            <td>${pet.lastName}</td>
             <td>${pet.age}</td>
             <td>${pet.gender}</td>
             <td>${pet.breed}</td>
             <td>${pet.service}</td>
             <td>${pet.type}</td>
+            <td>${pet.color}</td>
+            <td><button class="btn btn-danger" onclick="deletePet(${i})">Delete</button></td>
         </tr>`;
 
         petTableBody.innerHTML += row; // I add each new row to the table.
@@ -59,12 +65,14 @@ function registerPet(event) {
     event.preventDefault(); // I use `preventDefault()` to stop the form from refreshing the page.
 
     // Retrieving values from the input fields
-    const name = document.getElementById('petName').value;
+    const firstName = document.getElementById('petFirstName').value;
+    const lastName = document.getElementById('petLastName').value;
     const age = parseInt(document.getElementById('petAge').value, 10);
     const gender = document.getElementById('petGender').value;
     const service = document.getElementById('petService').value;
     const breed = document.getElementById('petBreed').value;
     const type = document.getElementById('petType').value;
+    const color = document.getElementById('petColor').value; // Get color input
 
     /**
      * Input validation:
@@ -72,13 +80,15 @@ function registerPet(event) {
      * - Ensures age is a positive number.
      * - If validation fails, an alert message is shown and the function stops execution.
      */
-    if (name.trim() === '' || breed.trim() === '' || isNaN(age) || age <= 0) {
+    if (firstName.trim() === '' || lastName.trim() === '' || breed.trim() === '' || color.trim() === '' || isNaN(age) || age <= 0) {
         alert('Please fill out all fields correctly.');
         return;
     }
 
     // Creating a new pet object using the `Pet` constructor
-    const newPet = new Pet(name, age, gender, breed, service, type);
+    const newPet = new Pet(firstName, lastName, age, gender, breed, service, type, color);
+
+    // Add the new pet to the array
 
     // I add the new pet to the `pets` array
     pets.push(newPet);
@@ -88,6 +98,13 @@ function registerPet(event) {
 
     // Updating the table with the newly registered pet
     displayRow();
+}
+/**
+ * Function to delete a pet
+ */
+function deletePet(index) {
+    pets.splice(index, 1); // Remove pet from the array
+    displayRow(); // Update table
 }
 
 /**
