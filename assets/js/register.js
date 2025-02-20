@@ -1,117 +1,178 @@
-/**
- * I created a `Pet` constructor function to ensure that every pet object
- * follows the same structure. This allows me to easily create and manage new pets dynamically.
- */
-function Pet(firstName, lastName, age, gender, breed, service, type, color) {
+// 🔹 I created an object literal to store my pet salon information
+const petSalon = {
+    name: "Groomi by Descoteaux",
+    pets: JSON.parse(localStorage.getItem("registeredPets")) || [], // I make sure pets load from localStorage if they exist
+    services: {
+        "Grooming Services": [
+            { name: "Full Grooming" },
+            { name: "Hair Trimming" },
+            { name: "De-shedding Treatment" }
+        ],
+        "Bathing & Hygiene Services": [
+            { name: "Regular Bath" },
+            { name: "Medicated Bath" },
+            { name: "Ear Cleaning" }
+        ],
+        "Styling & Coat Care": [
+            { name: "Creative Coloring" },
+            { name: "Fur Styling" },
+            { name: "Nail Painting" }
+        ]
+    }
+};
+
+// 🔹 I use a constructor function to ensure that all pets follow the same structure
+function Pet(firstName, lastName, age, gender, breed, category, service, type, color) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.age = age;
     this.gender = gender;
     this.breed = breed;
+    this.category = category;
     this.service = service;
     this.type = type;
-    this.color = color; // ✅ This stores the color
+    this.color = color;
 }
 
+// 🔹 I created this function to save my pets to localStorage
+function savePetsToLocalStorage() {
+    localStorage.setItem("registeredPets", JSON.stringify(petSalon.pets));
+}
 
-/**
- * I created an array called `pets` to store all registered pets.
- * Instead of manually writing pet objects, I use the `Pet` constructor to create them.
- */
-const pets = [
-    new Pet('Buddy', 'Smith', 3, 'Male', 'Golden Retriever', 'Grooming', 'Dog', 'Golden'), 
-    new Pet('Mittens', 'Johnson', 2, 'Female', 'Siamese Cat', 'Nail Clipping', 'Cat', 'White'),
-    new Pet('Rex', 'Brown', 5, 'Male', 'Bulldog', 'Bathing', 'Dog', 'Brown')
-];
+// 🔹 I use this function to populate the dropdown based on service category
+function loadServicesForDropdown(category) {
+    const petServiceDropdown = document.getElementById("petService");
+    petServiceDropdown.innerHTML = ""; // I clear existing options before loading new ones
 
-/**
- * I renamed `displayPet()` to `displayRow()` to align with the new requirement
- * of displaying pets inside a table instead of a list.
- * This function dynamically updates the `<tbody>` of the table.
- */
-function displayRow() {
-    const petTableBody = document.getElementById('petTableBody');
-    petTableBody.innerHTML = ''; // I clear the table first to prevent duplicates.
-
-    console.log("Current pets array:", pets); // ✅ Check if pets exist in the console
-
-    // I loop through the `pets` array and create table rows dynamically.
-    for (let i = 0; i < pets.length; i++) {
-        const pet = pets[i];
-
-        // Creating a row using template literals for cleaner HTML insertion.
-        const row = `<tr>
-            <td>${pet.firstName}</td>
-            <td>${pet.lastName}</td>
-            <td>${pet.age}</td>
-            <td>${pet.gender}</td>
-            <td>${pet.breed}</td>
-            <td>${pet.service}</td>
-            <td>${pet.type}</td>
-            <td>${pet.color}</td>
-            <td><button class="btn btn-danger" onclick="deletePet(${i})">Delete</button></td>
-        </tr>`;
-
-        petTableBody.innerHTML += row; // I add each new row to the table.
+    if (petSalon.services[category]) {
+        petSalon.services[category].forEach(service => {
+            petServiceDropdown.append(new Option(service.name, service.name));
+        });
+    } else {
+        petServiceDropdown.append(new Option("No services available", ""));
     }
-    document.getElementById('petCount').textContent = `Total Registered Pets: ${pets.length}`;
 }
 
-/**
- * This function registers a new pet using user input from the form.
- * It creates a new pet object, adds it to the `pets` array, updates the UI, and clears the form.
- */
-function registerPet(event) {
-    event.preventDefault(); // I use `preventDefault()` to stop the form from refreshing the page.
+// 🔹 This event listener makes sure the correct services load when a category is selected
+document.getElementById("serviceCategory").addEventListener("change", function () {
+    loadServicesForDropdown(this.value);
+});
 
-    // Retrieving values from the input fields
-    const firstName = document.getElementById('petFirstName').value;
-    const lastName = document.getElementById('petLastName').value;
-    const age = parseInt(document.getElementById('petAge').value, 10);
-    const gender = document.getElementById('petGender').value;
-    const service = document.getElementById('petService').value;
-    const breed = document.getElementById('petBreed').value;
-    const type = document.getElementById('petType').value;
-    const color = document.getElementById('petColor').value; // Get color input
+// 🔹 I created a function to display alerts using jQuery for better UI experience
+function showNotification(message, type) {
+    const notification = $(`<div class="alert alert-${type}">${message}</div>`);
+    $("#petNotification").html(notification);
+    setTimeout(() => {
+        notification.fadeOut();
+    }, 3000);
+}
 
-    /**
-     * Input validation:
-     * - Ensures name and breed fields are not empty.
-     * - Ensures age is a positive number.
-     * - If validation fails, an alert message is shown and the function stops execution.
-     */
-    if (firstName.trim() === '' || lastName.trim() === '' || breed.trim() === '' || color.trim() === '' || isNaN(age) || age <= 0) {
-        alert('Please fill out all fields correctly.');
+// 🔹 This function registers a new pet
+document.getElementById("petForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    // 🔹 I retrieve the form values from user input
+    const firstName = document.getElementById("petFirstName").value.trim();
+    const lastName = document.getElementById("petLastName").value.trim();
+    const age = parseInt(document.getElementById("petAge").value, 10);
+    const gender = document.getElementById("petGender").value;
+    const breed = document.getElementById("petBreed").value.trim();
+    const category = document.getElementById("serviceCategory").value;
+    const service = document.getElementById("petService").value;
+    const type = document.getElementById("petType").value;
+    const color = document.getElementById("petColor").value.trim();
+
+    // 🔹 I added validation to ensure all fields are properly filled
+    if (firstName === "" || lastName === "" || isNaN(age) || age <= 0 || breed === "" || service === "" || color === "") {
+        showNotification("All fields are required, and age must be a valid number.", "danger");
         return;
     }
 
-    // Creating a new pet object using the `Pet` constructor
-    const newPet = new Pet(firstName, lastName, age, gender, breed, service, type, color);
+    // 🔹 I create a new Pet object using the constructor
+    const newPet = new Pet(firstName, lastName, age, gender, breed, category, service, type, color);
+    petSalon.pets.push(newPet); // I add the new pet to my pets array
 
-    // Add the new pet to the array
+    // 🔹 I save the updated pets list to localStorage
+    savePetsToLocalStorage();
 
-    // I add the new pet to the `pets` array
-    pets.push(newPet);
+    // 🔹 I reload pets from localStorage to ensure the latest data is displayed
+    loadPetsFromLocalStorage();
+    displayRegisteredPets();
 
-    // Clearing the form fields after successful registration
-    document.getElementById('petForm').reset();
+    // 🔹 I show a success notification to let the user know the pet was added
+    showNotification("Pet registered successfully!", "success");
 
-    // Updating the table with the newly registered pet
-    displayRow();
+    // 🔹 I clear the form fields after successful registration
+    document.getElementById("petForm").reset();
+});
+
+// 🔹 This function loads pets from localStorage to keep data persistent
+function loadPetsFromLocalStorage() {
+    petSalon.pets = JSON.parse(localStorage.getItem("registeredPets")) || [];
 }
-/**
- * Function to delete a pet
- */
+
+// 🔹 I use this function to display the registered pets in the UI
+function displayRegisteredPets() {
+    const petTableBody = document.getElementById("petTableBody");
+    petTableBody.innerHTML = ""; // I clear previous entries before displaying new data
+
+    if (petSalon.pets.length === 0) {
+        document.getElementById("petCount").textContent = "Total Registered Pets: 0";
+        return;
+    }
+
+    petSalon.pets.forEach((pet, index) => {
+        const row = `
+            <tr>
+                <td>${pet.firstName}</td>
+                <td>${pet.lastName}</td>
+                <td>${pet.age}</td>
+                <td>${pet.gender}</td>
+                <td>${pet.breed}</td>
+                <td><span class="badge ${getCategoryBadge(pet.category)}">${pet.category}</span></td>
+                <td>${pet.service}</td>
+                <td>${pet.type}</td>
+                <td>${pet.color}</td>
+                <td><button class="btn btn-danger deletePet" data-index="${index}">Delete</button></td>
+            </tr>
+        `;
+        petTableBody.innerHTML += row;
+    });
+
+    document.getElementById("petCount").textContent = `Total Registered Pets: ${petSalon.pets.length}`;
+
+    // 🔹 I attach the delete event to each pet so users can remove them dynamically
+    document.querySelectorAll(".deletePet").forEach(button => {
+        button.addEventListener("click", function () {
+            deletePet(this.dataset.index);
+        });
+    });
+}
+
+// 🔹 This function assigns a category badge color based on the service type
+function getCategoryBadge(category) {
+    switch (category) {
+        case "Grooming Services":
+            return "bg-primary";
+        case "Bathing & Hygiene Services":
+            return "bg-success";
+        case "Styling & Coat Care":
+            return "bg-warning text-dark";
+        default:
+            return "bg-secondary";
+    }
+}
+
+// 🔹 This function deletes a pet and updates localStorage
 function deletePet(index) {
-    pets.splice(index, 1); // Remove pet from the array
-    displayRow(); // Update table
+    petSalon.pets.splice(index, 1);
+    savePetsToLocalStorage();
+    displayRegisteredPets();
 }
 
-/**
- * I use an event listener to ensure that the table loads correctly when the page opens.
- * This prevents errors where elements might not be ready when JavaScript runs.
- */
-document.addEventListener('DOMContentLoaded', () => {
-    displayRow(); // This should display any pets in the array when the page loads.
-    document.getElementById('petForm').addEventListener('submit', registerPet);
+// 🔹 I ensure that the pets and services are loaded when the page is opened
+document.addEventListener("DOMContentLoaded", () => {
+    loadPetsFromLocalStorage();
+    displayRegisteredPets();
+    loadServicesForDropdown(document.getElementById("serviceCategory").value);
 });

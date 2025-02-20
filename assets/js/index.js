@@ -1,46 +1,25 @@
-// I created an object literal called `salon` to store the salon's information.
-// This helps organize the salon's details in one place and makes it easy to display on `index.html`.
-const salon = {
-    name: "Groomi by Descoteaux",
-    address: {
-        street: "0209 Descoteaux Lane",
-        city: "Laurent City",
-        zip: "22100"
-    },
-    phone: "(888) 321-7654"
-};
-
-/**
- * This function displays the salon's information dynamically on `index.html`.
- * I chose to use `innerHTML` so the details can be updated easily if needed.
- */
-function displaySalonInfo() {
-    document.getElementById('salonInfo').innerHTML = `
-        <h2>Welcome to ${salon.name}</h2>
-        <p>Located at: ${salon.address.street}, ${salon.address.city}, ZIP ${salon.address.zip}</p>
-        <p>Contact us at: ${salon.phone}</p>
-    `;
-}
-
-// I am using `const` for the `pets` array because I do not want to accidentally reassign it.
-// However, `const` still allows me to modify the contents (like adding new pets using .push()).
+// I am using `const` for the `pets` array because I want to prevent reassignment of the entire array.
+// However, using `const` still allows me to modify its contents (e.g., adding new pets using .push()).
 const pets = [
-    new Pet('Buddy', 3, 'Male', 'Golden Retriever', 'Grooming', 'Dog'),
-    new Pet('Mittens', 2, 'Female', 'Siamese Cat', 'Nail Clipping', 'Cat'),
-    new Pet('Rex', 5, 'Male', 'Bulldog', 'Bathing', 'Dog')
+    { name: 'Buddy', age: 3, gender: 'Male', service: 'Grooming', breed: 'Golden Retriever' },
+    { name: 'Mittens', age: 2, gender: 'Female', service: 'Nail Clipping', breed: 'Siamese Cat' },
+    { name: 'Rex', age: 5, gender: 'Male', service: 'Bathing', breed: 'Bulldog' }
 ];
 
+// I chose `const` instead of `let` because I don't want to accidentally reassign the entire `pets` array.
+// If I had used `let`, I could reassign it completely, which is not necessary for this project.
+// Incorrect reassignment that `const` prevents:
+// pets = [];  // ❌ This would throw an error because `pets` is a constant.
+
 /**
- * This function calculates and displays the total number of registered pets.
- * I used `getElementById()` to dynamically update the pet count in the HTML.
+ * Display the total number of registered pets
  */
 function displayPetCount() {
     document.getElementById('petCount').textContent = `Total Registered Pets: ${pets.length}`;
 }
 
 /**
- * This function loops through the `pets` array and dynamically displays each pet's name in the HTML.
- * I chose to clear the list each time (`innerHTML = ''`) to prevent duplicates when updating the display.
+ * Display pet names dynamically in the HTML
  */
 function displayPetNames() {
     const petNamesList = document.getElementById('petNamesList');
@@ -55,24 +34,58 @@ function displayPetNames() {
 }
 
 /**
- * The `Pet` constructor function is used to create pet objects dynamically.
- * I structured this to ensure that all pets have the same properties when registered.
+ * Calculate and display the average pet age
  */
-function Pet(name, age, gender, breed, service, type) {
-    this.name = name;
-    this.age = age;
-    this.gender = gender;
-    this.breed = breed;
-    this.service = service;
-    this.type = type;
+function displayAverageAge() {
+    const totalAge = pets.reduce((sum, pet) => sum + pet.age, 0);
+    const averageAge = (totalAge / pets.length).toFixed(2);
+    document.getElementById('averageAge').textContent = `Average Age of Pets: ${averageAge} years`;
 }
 
 /**
- * This function runs when the page loads to initialize the displayed data.
- * It ensures that the pet count, pet names, and salon info appear dynamically.
+ * Add a new pet from the registration form
  */
+function registerPet(event) {
+    event.preventDefault(); // Prevent form from refreshing the page
+
+    // Get user input values
+    const name = document.getElementById('petName').value;
+    const age = parseInt(document.getElementById('petAge').value, 10);
+    const gender = document.getElementById('petGender').value;
+    const service = document.getElementById('petService').value;
+    const breed = document.getElementById('petBreed').value;
+
+    // Validate input (ensure name and breed are not empty)
+    if (name.trim() === '' || breed.trim() === '' || isNaN(age) || age <= 0) {
+        alert('Please fill out all fields correctly.');
+        return;
+    }
+
+    // Create a new pet object
+    const newPet = { name, age, gender, service, breed };
+
+    // Add the new pet to the pets array
+    pets.push(newPet);
+
+    // Clear the form inputs
+    document.getElementById('petForm').reset();
+
+    // Update the displayed pet list and count
+    displayPetCount();
+    displayPetNames();
+    displayAverageAge();
+}
+
+// Attach event listener to the registration form
 document.addEventListener('DOMContentLoaded', () => {
-    displaySalonInfo();  // Display salon information
-    displayPetCount();   // Show total registered pets
-    displayPetNames();   // Show pet names dynamically
+    // Run initial display functions
+    displayPetCount();
+    displayPetNames();
+    displayAverageAge();
+
+    // Attach form submission event
+    const petForm = document.getElementById('petForm');
+    if (petForm) {
+        petForm.addEventListener('submit', registerPet);
+    }
 });

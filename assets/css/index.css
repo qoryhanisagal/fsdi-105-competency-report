@@ -42,3 +42,29 @@ p {
     padding: 10px;
     border-radius: 5px;
 }
+
+/* Footer Styles */
+.footer {
+    background-color: #0303AB; /* Deep Royal Blue */
+    color: white !important; /* Ensure text remains white */
+    text-align: center;
+    padding: 20px;
+}
+
+.footer p {
+    color: white !important; /* Ensure text remains white */
+    margin: 5px 0;
+}
+
+.footer a {
+    color: white; /* Ensure button text remains white */
+    text-decoration: none;
+    background-color: #00008B; /* Darker Blue */
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.footer a:hover {
+    background-color: #CA09E8; /* Magenta Hover Effect */
+}

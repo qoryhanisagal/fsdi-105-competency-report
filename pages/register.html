@@ -9,6 +9,7 @@
     <link rel="stylesheet" 
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/register.css">
 </head>
 <body>
@@ -52,16 +53,6 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="petService" class="form-label">Service:</label>
-                    <select id="petService" name="petService" class="form-select">
-                        <option value="Grooming">Grooming</option>
-                        <option value="Nail Clipping">Nail Clipping</option>
-                        <option value="Bathing">Bathing</option>
-                        <option value="Full Spa">Full Spa</option>
-                    </select>
-                </div>
-
-                <div class="col-md-6">
                     <label for="petType" class="form-label">Type:</label>
                     <select id="petType" name="petType" class="form-select">
                         <option value="Dog">Dog</option>
@@ -71,17 +62,38 @@
                     </select>
                 </div>
 
-                <!-- Add Color Field to the Form -->
+                <!-- Service Category Field -->
+                <div class="col-md-6">
+                    <label for="serviceCategory" class="form-label">Service Category:</label>
+                    <select id="serviceCategory" name="serviceCategory" class="form-select">
+                        <option value="Grooming Services">Grooming Services</option>
+                        <option value="Bathing & Hygiene Services">Bathing & Hygiene Services</option>
+                        <option value="Styling & Coat Care">Styling & Coat Care</option>
+                    </select>
+                </div>
+
+                <!-- Service (Dynamically Populated) -->
+                <div class="col-md-6">
+                    <label for="petService" class="form-label">Service:</label>
+                    <select id="petService" name="petService" class="form-select">
+                        <!-- Services will be dynamically inserted here -->
+                    </select>
+                </div>
+
+                <!-- Color -->
                 <div class="col-md-6">
                     <label for="petColor" class="form-label">Color:</label>
                     <input type="text" id="petColor" name="petColor" class="form-control" required>
                 </div>
 
+                <!-- Submit Button -->
                 <div class="col-12 text-center">
                     <button type="submit" class="btn btn-success">Register Pet</button>
                 </div>
-
             </form>
+
+            <!-- 🔹 Notification Div (For jQuery Validation) -->
+            <div id="petNotification" class="mt-3"></div>
         </section>
 
         <!-- Display Registered Pets in a Table -->
@@ -98,6 +110,7 @@
                         <th>Age</th>
                         <th>Gender</th>
                         <th>Breed</th>
+                        <th>Service Category</th>
                         <th>Service</th>
                         <th>Type</th>
                         <th>Color</th>
@@ -112,9 +125,11 @@
     <!-- Footer Section -->
     <footer class="text-center mt-4 p-3 bg-primary text-white">
         <p>&copy; 2025 Groomi by Descoteaux. All Rights Reserved.</p>
-        <a href="index.html" class="btn btn-light">Back to Home</a>
+        <p>Contact Us: (123) 456-7890 | info@groomi.com</p>
+        <a href="../index.html" class="btn btn-light">Back to Home</a>
     </footer>
 
+    <!-- JavaScript -->
     <script src="../assets/js/register.js"></script>
 </body>
 </html>

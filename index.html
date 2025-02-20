@@ -3,49 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Groomi by Descoteaux - Pet Salon</title>
+    <title>Groomi by Descoteaux - Luxury Pet Salon</title>
+
+    <!-- Bootstrap CDN for Styling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/index.css">
 </head>
 <body>
-    <!-- Header Section -->
-    <header>
-        <h1>Groomi by Descoteaux</h1>
-        <p>Your pet’s happiness and well-being are our top priorities.</p>
+
+    <!-- 🔹 Hero Section (Banner) -->
+    <header class="hero">
+        <div class="container text-center">
+            <h1>Luxury Pet Grooming & Care</h1>
+            <p>Premium pet services to pamper your furry friends.</p>
+            <a href="pages/register.html" class="btn btn-primary btn-lg">Register Your Pet</a>
+            <a href="pages/services.html" class="btn btn-outline-light btn-lg">View Services</a>
+        </div>
     </header>
 
-    <!-- Salon Information Section (Dynamically Updated) -->
-    <section id="salonInfo"></section>
+    <!-- 🔹 About Us Section -->
+    <section class="about-section text-center py-5">
+        <div class="container">
+            <h2>Welcome to Groomi by Descoteaux</h2>
+            <p>Providing the highest quality pet grooming services with love and care. Our team ensures your pets are pampered, healthy, and stylish.</p>
+        </div>
+    </section>
 
-    <!-- Main Content -->
-    <main>
-        <!-- About Section -->
-        <section id="about">
-            <h2>About Groomi by Descoteaux</h2>
-            <p>At Groomi by Descoteaux, we provide expert pet grooming services in a warm and welcoming environment. 
-               Our experienced groomers specialize in **bathing, nail trimming, full grooming, and spa treatments** 
-            to ensure your pet looks and feels their best.</p>
-        </section>
+    <!-- 🔹 Services Section -->
+    <section class="services-section py-5">
+        <div class="container">
+            <h2 class="text-center">Our Services</h2>
+            <div id="servicesContainer" class="row text-center">
+                <!-- Services will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
 
-        <!-- Display Registered Pets -->
-        <section id="registeredPets">
-            <h2>Registered Pets</h2>
-            <p id="petCount">Total Registered Pets: 0</p>
-            <ul id="petNamesList"></ul>
-        </section>
+    <!-- 🔹 Why Choose Us Section -->
+    <section class="why-choose-us bg-light py-5">
+        <div class="container text-center">
+            <h2>Why Choose Us?</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="img/product-5.svg" alt="Expert Groomers" class="icon">
+                    <p>Expert Groomers</p>
+                </div>
+                <div class="col-md-4">
+                    <img src="img/product-2.svg" alt="Luxury Spa Treatments" class="icon">
+                    <p>Luxury Spa Treatments</p>
+                </div>
+                <div class="col-md-4">
+                    <img src="img/product-1.svg" alt="Safe & Comfortable Environment" class="icon">
+                    <p>Safe & Comfortable Environment</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <!-- Register Pets Button -->
-        <section id="register">
-            <h2>Register Your Pet</h2>
-            <p>Join the Groomi family! Click below to register your pet for a grooming session.</p>
-            <a href="pages/register.html" class="btn">Register Now</a>
-        </section>
-    </main>
+    <!-- 🔹 Testimonials Section -->
+    <section class="testimonials text-center py-5">
+        <div class="container">
+            <h2>What Our Clients Say</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <blockquote>"My dog looks amazing after every visit! The team truly cares."</blockquote>
+                    <p>- Sarah W.</p>
+                </div>
+                <div class="col-md-4">
+                    <blockquote>"A luxurious and professional experience. Highly recommend!"</blockquote>
+                    <p>- James L.</p>
+                </div>
+                <div class="col-md-4">
+                    <blockquote>"I feel at ease knowing my pet is in the best hands!"</blockquote>
+                    <p>- Emily R.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Footer Section -->
-    <footer>
+    <!-- 🔹 Footer -->
+    <footer class="footer bg-primary text-white text-center py-4">
         <p>&copy; 2025 Groomi by Descoteaux. All Rights Reserved.</p>
+        <p>Contact Us: (123) 456-7890 | info@groomi.com</p>
+        <a href="pages/register.html" class="btn btn-light">Register Now</a>
     </footer>
 
-    <script src="assets/js/index.js"></script>
+    <!-- JavaScript -->
+    <script src="assets/js/services.js"></script>
+    <script>
+        // Function to Load Services Dynamically into Landing Page
+        function loadServices() {
+            const servicesContainer = document.getElementById("servicesContainer");
+            const storedServices = localStorage.getItem("salonServices");
+
+            if (storedServices) {
+                const services = JSON.parse(storedServices);
+                services.forEach(service => {
+                    const serviceCard = `
+                        <div class="col-md-4">
+                            <div class="card shadow-sm p-3 mb-4">
+                                <h5>${service.name}</h5>
+                                <p>${service.description}</p>
+                                <p><strong>Price:</strong> ${service.price}</p>
+                                <p><strong>Duration:</strong> ${service.duration}</p>
+                            </div>
+                        </div>
+                    `;
+                    servicesContainer.innerHTML += serviceCard;
+                });
+            } else {
+                servicesContainer.innerHTML = `<p class="text-center">No services available at the moment.</p>`;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadServices);
+    </script>
+
 </body>
 </html>
