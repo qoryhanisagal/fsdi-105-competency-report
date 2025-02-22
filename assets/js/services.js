@@ -1,111 +1,139 @@
-// 🔹 Object Literal for Salon (Stores services)
+// 🚀 services.js is loaded!
+console.log("🚀 services.js is loaded!");
+
+// 🏪 My Pet Salon Object (Stores Services)
 const salon = {
     name: "Groomi by Descoteaux",
-    services: JSON.parse(localStorage.getItem("salonServices")) || [] // ✅ Load services from storage or set empty
+    services: JSON.parse(localStorage.getItem("salonServices")) || [] // 💾 Load services from storage with empty array
 };
 
-// 🔹 Save Services to Local Storage
+// 💾 Function to Save Services to Local Storage
 function saveServicesToLocalStorage() {
     localStorage.setItem("salonServices", JSON.stringify(salon.services));
+    console.log("💾 Services saved to localStorage:", salon.services);
 }
 
-// 🔹 Register New Service (Using jQuery)
-$(document).ready(() => {
-    $("#serviceForm").submit(function (event) {
-        event.preventDefault();
+// 🛠️ If Local Storage is Empty, Load Default Services
+if (salon.services.length === 0) {
+    console.log("📢 No services found, adding default services...");
 
-        // Retrieve form values
-        const name = $("#serviceName").val().trim();
-        const description = $("#serviceDescription").val().trim();
-        const price = parseFloat($("#servicePrice").val());
-        const duration = $("#serviceDuration").val().trim();
-        const category = $("#serviceCategory").val(); // ✅ Category stored exactly as selected
-
-        // 🔹 Validation
-        if (name === "" || description === "" || isNaN(price) || price <= 0 || duration === "" || category === "") {
-            showNotification("All fields are required, and price must be valid.", "danger");
-            return;
+    // ✅ Default Service List (Preloaded for Fresh Starts)
+    const defaultServices = [
+        {
+            name: "Full Grooming",
+            category: "🐾 Grooming Services",
+            description: "Complete grooming package including bath, haircut, and nail trim.",
+            price: "50.00",
+            duration: "90 mins"
+        },
+        {
+            name: "Regular Bath",
+            category: "🚿 Bathing & Hygiene Services",
+            description: "A refreshing bath with shampoo and conditioner.",
+            price: "30.00",
+            duration: "45 mins"
+        },
+        {
+            name: "Nail Clipping",
+            category: "✂️ Styling & Coat Care",
+            description: "Trimming nails to keep your pet's paws healthy and comfortable.",
+            price: "15.00",
+            duration: "15 mins"
+        },
+        {
+            name: "Overnight Stay",
+            category: "🏡 Boarding & Daycare",
+            description: "Comfortable overnight boarding with 24/7 care.",
+            price: "70.00",
+            duration: "1 Night"
         }
+    ];
 
-        // ✅ Create a new Service object
-        const newService = {
-            name: name,
-            category: category,
-            description: description,
-            price: parseFloat(price).toFixed(2), // ✅ Ensures correct price format
-            duration: duration
-        };
+    // 🔄 Push Default Services to My Array
+    salon.services.push(...defaultServices);
+    
+    // 💾 Save to Local Storage
+    saveServicesToLocalStorage();
 
-        // ✅ Add new service to the array
-        salon.services.push(newService);
+    console.log("✅ Default services added to localStorage!");
+}
 
-        // ✅ Save Services to Local Storage
-        saveServicesToLocalStorage();
+// 📂 Function to Load Services from Local Storage
+function loadServicesFromLocalStorage() {
+    salon.services = JSON.parse(localStorage.getItem("salonServices")) || [];
+    console.log("📂 Loaded services:", salon.services); // 🔍 Debugging
+}
 
-        // ✅ Show success message
-        showNotification("Service added successfully!", "success");
-
-        // ✅ Clear the form fields
-        $("#serviceForm")[0].reset();
-
-        // ✅ Reload services from storage & Update UI
-        displayServices();
-    });
-
-    // ✅ Load stored services & display them on page load
-    displayServices();
-});
-
-// 🔹 Function to Display Services as Cards
+// 🏗️ Constructor Function for Services
+function Service(name, category, description, price, duration) {
+    this.name = name;
+    this.category = category;
+    this.description = description;
+    this.price = parseFloat(price).toFixed(2);
+    this.duration = duration;
+}
+// 🖥️ Function to Display Services in the UI
 function displayServices() {
+    console.log("📢 displayServices() is running...");
+
     const serviceCardsContainer = document.getElementById("serviceCardsContainer");
 
-    // ✅ Ensure container exists before modifying it
     if (!serviceCardsContainer) {
-        console.error("Error: `serviceCardsContainer` not found in the DOM.");
+        console.error("🚨 Error: `serviceCardsContainer` not found in the DOM.");
         return;
     }
 
-    // ✅ Reload the latest services from localStorage
-    salon.services = JSON.parse(localStorage.getItem("salonServices")) || [];
+    // 🗂 Load Latest Services from Storage
+    loadServicesFromLocalStorage();
+    console.log("🗂 Stored Services:", salon.services); // 🔍 Debugging local storage
 
-    serviceCardsContainer.innerHTML = ""; // ✅ Clear existing services
+    // ✨ Clear Existing Services Before Updating UI
+    serviceCardsContainer.innerHTML = "";
 
     if (salon.services.length === 0) {
+        console.warn("⚠ No services available!");
         serviceCardsContainer.innerHTML = `<p class="text-center">No services available.</p>`;
         return;
     }
 
+    // 🔄 Loop Through Services & Render Cards
     salon.services.forEach((service, index) => {
-        const categoryBadge = getCategoryBadge(service.category); // ✅ Get category badge
+        console.log(`✅ Rendering service: ${service.name}`); // 🔍 Debugging
+        const categoryBadge = getCategoryBadge(service.category);
 
-        const serviceCard = `
-            <div class="col-md-4 mb-3">
-                <div class="card shadow-sm p-3">
-                    <h5 class="card-title">${service.name}</h5>
-                    <p><span class="badge ${categoryBadge}">${service.category}</span></p>
-                    <p class="card-text">${service.description}</p>
-                    <p><strong>Price:</strong> $${service.price}</p>
-                    <p><strong>Duration:</strong> ${service.duration}</p>
-                    <button class="btn btn-danger deleteService" data-index="${index}">Delete</button>
-                </div>
+        const serviceCard = document.createElement("div");
+        serviceCard.className = "col-md-4 mb-3";
+        serviceCard.innerHTML = `
+            <div class="card shadow-sm p-3">
+                <h5 class="card-title">${service.name}</h5>
+                <p><span class="badge ${categoryBadge}">${service.category}</span></p>
+                <p class="card-text">${service.description}</p>
+                <p><strong>Price:</strong> $${service.price}</p>
+                <p><strong>Duration:</strong> ${service.duration}</p>
+                <button class="btn btn-danger deleteService" data-index="${index}">Delete</button>
             </div>
         `;
-        serviceCardsContainer.innerHTML += serviceCard;
+        serviceCardsContainer.appendChild(serviceCard);
     });
 
-    // ✅ Attach delete event to buttons
+    // 🗑️ Attach Delete Event to Each Button
     document.querySelectorAll(".deleteService").forEach(button => {
         button.addEventListener("click", function () {
             deleteService(this.dataset.index);
         });
     });
 
-    // ✅ Update Service Count
+    // 🔢 Update Service Count
     document.getElementById("serviceCount").textContent = `Total Services: ${salon.services.length}`;
 }
 
-// 🔹 Function to Get Category Badge Color
+// 🏁 Ensure `displayServices()` Runs After DOM Loads
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("📢 Page Loaded – Displaying Services...");
+    displayServices();
+});
+
+// 🎨 Function to Get Category Badge Color
 function getCategoryBadge(category) {
     switch (category) {
         case "🐾 Grooming Services":
@@ -127,16 +155,86 @@ function getCategoryBadge(category) {
     }
 }
 
-// 🔹 Function to Delete a Service
+// 🗑️ Delete a Service
 function deleteService(index) {
-    salon.services.splice(index, 1); // ✅ Remove service from array
-    saveServicesToLocalStorage(); // ✅ Update local storage
-    displayServices(); // ✅ Refresh UI
+    console.log(`🗑 Deleting service at index ${index}...`);
+    salon.services.splice(index, 1);
+    saveServicesToLocalStorage();
+    displayServices();
 }
 
-// 🔹 Function to Show Notifications Using jQuery
+// ✏️ Edit a Service (Populates Form for Editing)
+function editService(index) {
+    const service = salon.services[index];
+
+    // ✍️ Populate Form Fields with Service Data
+    document.getElementById("serviceName").value = service.name;
+    document.getElementById("serviceCategory").value = service.category;
+    document.getElementById("serviceDescription").value = service.description;
+    document.getElementById("servicePrice").value = service.price;
+    document.getElementById("serviceDuration").value = service.duration;
+
+    // 🔄 Store Editing Index
+    editingIndex = index;
+
+    // 🔁 Change Button Text to "Update Service"
+    document.querySelector("#addServiceBtn").textContent = "Update Service";
+}
+
+// 📝 Register New Service via Form Submission
+$(document).ready(() => {
+    console.log("📢 jQuery is ready, waiting for form submission...");
+
+    $("#serviceForm").submit(function (event) {
+        event.preventDefault();
+
+        const name = $("#serviceName").val().trim();
+        const description = $("#serviceDescription").val().trim();
+        const price = parseFloat($("#servicePrice").val());
+        const duration = $("#serviceDuration").val().trim();
+        const category = $("#serviceCategory").val();
+
+        if (!name || !description || !category || !duration || isNaN(price) || price <= 0) {
+            showNotification("⚠ Please fill out all fields correctly.", "danger");
+            return;
+        }
+        
+        // ✅ Show Success Message
+        showNotification("✅ Service added successfully!", "success");
+
+// 🆕 Create a New Service Instance
+    const newService = new Service(name, category, description, price, duration);
+
+        // 💾 Add to Local Storage
+        salon.services.push(newService);
+        saveServicesToLocalStorage();
+
+        console.log("✅ Service Added:", newService);
+
+        // 🔄 Update UI
+        displayServices();
+
+        // 🧹 Clear Form
+        $("#serviceForm")[0].reset();
+        showNotification("✅ Service added successfully!", "success");
+    });
+
+    // 🖥️ Display Services on Page Load
+    displayServices();
+});
+
+// 🔔 Show Notifications with jQuery
 function showNotification(message, type) {
     const notification = $(`<div class="alert alert-${type}">${message}</div>`);
-    $("#serviceNotification").html(notification);
-    setTimeout(() => { notification.fadeOut(); }, 3000);
+    $("#serviceNotification").html(notification).fadeIn();
+
+    setTimeout(() => { 
+        notification.fadeOut(() => { notification.remove(); }); 
+    }, 3000);
 }
+
+// 🎬 Load Services & Display on Page Load
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("📢 Page Loaded – Displaying Services...");
+    displayServices();
+});

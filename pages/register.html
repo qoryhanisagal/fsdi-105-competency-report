@@ -66,9 +66,14 @@
                 <div class="col-md-6">
                     <label for="serviceCategory" class="form-label">Service Category:</label>
                     <select id="serviceCategory" name="serviceCategory" class="form-select">
-                        <option value="Grooming Services">Grooming Services</option>
-                        <option value="Bathing & Hygiene Services">Bathing & Hygiene Services</option>
-                        <option value="Styling & Coat Care">Styling & Coat Care</option>
+                        <option value="">Select a Category</option>
+                        <option value="🐾 Grooming Services">🐾 Grooming Services</option>
+                        <option value="🚿 Bathing & Hygiene Services">🚿 Bathing & Hygiene Services</option>
+                        <option value="✂️ Styling & Coat Care">✂️ Styling & Coat Care</option>
+                        <option value="🐶 Specialty Services">🐶 Specialty Services</option>
+                        <option value="🏡 Boarding & Daycare">🏡 Boarding & Daycare</option>
+                        <option value="🎾 Fun & Wellness Services">🎾 Fun & Wellness Services</option>
+                        <option value="🩺 Health & Maintenance Services">🩺 Health & Maintenance Services</option>
                     </select>
                 </div>
 
@@ -88,7 +93,7 @@
 
                 <!-- Submit Button -->
                 <div class="col-12 text-center">
-                    <button type="submit" class="btn btn-success">Register Pet</button>
+                    <button type="submit" id="addPetBtn" class="btn btn-success">Register Pet</button>
                 </div>
             </form>
 
@@ -129,7 +134,10 @@
         <a href="../index.html" class="btn btn-light">Back to Home</a>
     </footer>
 
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- JavaScript -->
     <script src="../assets/js/register.js"></script>
+    <script src="../assets/js/services.js"></script>
 </body>
 </html>

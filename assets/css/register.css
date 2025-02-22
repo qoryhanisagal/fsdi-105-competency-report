@@ -1,5 +1,4 @@
 /* General Styles */
-/* I kept the light background for a clean look */
 body {
     font-family: Arial, sans-serif;
     background-color: #f8f8f8;
@@ -9,49 +8,31 @@ body {
 }
 
 /* Header Styling */
-/* I kept the h1 white only when inside a dark background */
 header {
-    background-color: #0303AB; /* Deep royal blue */
+    background-color: #0303AB; /* Deep Royal Blue */
     padding: 20px;
     border-radius: 8px;
 }
 
-/* Ensuring headings work on different backgrounds */
 h1 {
-    color: white; /* Works on the dark header */
+    color: white;
     font-size: 2.5rem;
     font-weight: bold;
     margin: 0;
 }
 
-/* Section Titles - Adjusted for Visibility */
+/* Section Titles */
 h2 {
-    color: #000; /* Black for better readability on light backgrounds */
+    color: #000;
     font-size: 1.8rem;
     font-weight: bold;
 }
 
-/* Paragraph Styling - Ensures readability */
+/* Paragraph Styling */
 p {
-    color: white
+    color: white; /* ✅ Missing semicolon fixed */
     font-size: 1.1rem;
     opacity: 0.9;
-}
-
-/* Button Styling */
-.btn {
-    display: inline-block;
-    background-color: #0303AB;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s;
-}
-
-/* Button Hover Effect */
-.btn:hover {
-    background-color: #CA09E8;
 }
 
 /* Pet List Styling */
@@ -60,7 +41,6 @@ p {
     padding: 0;
 }
 
-/* Styling for Individual Pet Names */
 #petNamesList li {
     background-color: #e0ffff;
     margin: 5px;
@@ -68,7 +48,7 @@ p {
     border-radius: 6px;
 }
 
-/* Ensure the table is well-spaced */
+/* Table Styling */
 table {
     width: 100%;
     margin-top: 20px;
@@ -76,28 +56,93 @@ table {
     background-color: white;
 }
 
-/* Table headers should stand out */
 th {
     background-color: #000;
     color: white;
     padding: 10px;
 }
 
-/* Table rows should alternate in color */
 tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-/* Delete button styling */
+/* 🔹 General Button Styling */
+.btn {
+    display: inline-block;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 🔹 Edit & Delete Buttons - Same Size */
+.btn-edit,
+.btn-danger {
+    width: 80px;
+    height: 40px;
+    padding: 8px 12px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 🔹 Edit Button */
+.btn-edit {
+    background-color: #ffc107;
+    color: black;
+}
+
+/* 🔹 Edit Button Hover */
+.btn-edit:hover {
+    background-color: #e0a800;
+}
+
+/* 🔹 Delete Button */
 .btn-danger {
     background-color: #dc3545;
     color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
 }
 
-/* Delete button hover effect */
+/* 🔹 Delete Button Hover */
 .btn-danger:hover {
-    background-color: #a71d2a;
+    background-color: #c82333;
+}
+
+/* 🔹 Ensure Buttons Align in Table */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* 🔹 Register Pet Button */
+.btn-register {
+    background-color: #0303AB;
+    color: white;
+    padding: 12px 30px; /* Adjusted padding */
+    font-size: 16px;
+    width: auto; /* Keeps the width dynamic */
+    min-width: 180px; /* Ensures text fits */
+    height: 50px; /* Matches button height */
+    white-space: nowrap; /* Prevents text wrapping */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* 🔹 Register Button Hover Effect */
+.btn-register:hover {
+    background-color: #CA09E8;
 }

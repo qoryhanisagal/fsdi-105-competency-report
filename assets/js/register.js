@@ -2,7 +2,7 @@
 const petSalon = {
     name: "Groomi by Descoteaux",
     pets: JSON.parse(localStorage.getItem("registeredPets")) || [], // I make sure pets load from localStorage if they exist
-    services: {
+    services: JSON.parse(localStorage.getItem("salonServices")) || { // ✅ Load services dynamically from localStorage
         "Grooming Services": [
             { name: "Full Grooming" },
             { name: "Hair Trimming" },
@@ -39,23 +39,37 @@ function savePetsToLocalStorage() {
     localStorage.setItem("registeredPets", JSON.stringify(petSalon.pets));
 }
 
-// 🔹 I use this function to populate the dropdown based on service category
+// 🔹 I use this function to populate the services dropdown based on the selected category
 function loadServicesForDropdown(category) {
     const petServiceDropdown = document.getElementById("petService");
-    petServiceDropdown.innerHTML = ""; // I clear existing options before loading new ones
+    petServiceDropdown.innerHTML = ""; // 🔹 Clear existing options
 
-    if (petSalon.services[category]) {
-        petSalon.services[category].forEach(service => {
-            petServiceDropdown.append(new Option(service.name, service.name));
-        });
-    } else {
-        petServiceDropdown.append(new Option("No services available", ""));
+    // ✅ Load all stored services from localStorage
+    const storedServices = JSON.parse(localStorage.getItem("salonServices")) || [];
+
+    // ✅ Filter services that belong to the selected category
+    const filteredServices = storedServices.filter(service => service.category === category);
+
+    if (filteredServices.length === 0) {
+        petServiceDropdown.innerHTML = "<option value=''>No services available</option>";
+        return;
     }
+
+    // ✅ Populate the dropdown with services in the selected category
+    filteredServices.forEach(service => {
+        petServiceDropdown.append(new Option(service.name, service.name));
+    });
 }
 
-// 🔹 This event listener makes sure the correct services load when a category is selected
+// 🔹 This event listener updates the service dropdown when a category is selected
 document.getElementById("serviceCategory").addEventListener("change", function () {
-    loadServicesForDropdown(this.value);
+    loadServicesForDropdown(this.value); // ✅ Dynamically update the service dropdown
+});
+
+// ✅ Ensure services load when the page is opened
+document.addEventListener("DOMContentLoaded", () => {
+    loadPetsFromLocalStorage();
+    displayRegisteredPets();
 });
 
 // 🔹 I created a function to display alerts using jQuery for better UI experience
@@ -133,7 +147,10 @@ function displayRegisteredPets() {
                 <td>${pet.service}</td>
                 <td>${pet.type}</td>
                 <td>${pet.color}</td>
-                <td><button class="btn btn-danger deletePet" data-index="${index}">Delete</button></td>
+                <td>
+                    <button class="btn btn-warning editPet" data-index="${index}">Edit</button>
+                    <button class="btn btn-danger deletePet" data-index="${index}">Delete</button>
+                </td>
             </tr>
         `;
         petTableBody.innerHTML += row;
@@ -145,6 +162,13 @@ function displayRegisteredPets() {
     document.querySelectorAll(".deletePet").forEach(button => {
         button.addEventListener("click", function () {
             deletePet(this.dataset.index);
+        });
+    });
+
+    // 🔹 I attach edit event to each edit button
+    document.querySelectorAll(".editPet").forEach(button => {
+        button.addEventListener("click", function () {
+            editPet(this.dataset.index);
         });
     });
 }
@@ -170,9 +194,9 @@ function deletePet(index) {
     displayRegisteredPets();
 }
 
-// 🔹 I ensure that the pets and services are loaded when the page is opened
+// ✅ Call function on page load to load services into dropdown
 document.addEventListener("DOMContentLoaded", () => {
     loadPetsFromLocalStorage();
     displayRegisteredPets();
-    loadServicesForDropdown(document.getElementById("serviceCategory").value);
+    loadServicesForDropdown(); // ✅ Load services into dropdown on register page
 });
