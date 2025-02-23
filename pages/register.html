@@ -82,6 +82,7 @@
                     <label for="petService" class="form-label">Service:</label>
                     <select id="petService" name="petService" class="form-select">
                         <!-- Services will be dynamically inserted here -->
+                        <option value="">Select a Service</option>
                     </select>
                 </div>
 
@@ -91,9 +92,19 @@
                     <input type="text" id="petColor" name="petColor" class="form-control" required>
                 </div>
 
+                <!-- Phone Number -->
+                <div class="col-md-6">
+                    <label for="petPhoneNumber" class="form-label">Phone Number:</label>
+                    <input type="tel" id="petPhoneNumber" name="petPhoneNumber" class="form-control" required placeholder="(123) 456-7890">
+                </div>
+
                 <!-- Submit Button -->
                 <div class="col-12 text-center">
+                    <!-- Register Pet Button (Initially Visible) -->
                     <button type="submit" id="addPetBtn" class="btn btn-success">Register Pet</button>
+
+                    <!-- Update Pet Button (Initially Hidden) -->
+                    <button type="submit" id="updatePetButton" class="btn btn-primary" style="display: none;">Update Pet</button>
                 </div>
             </form>
 
@@ -119,6 +130,7 @@
                         <th>Service</th>
                         <th>Type</th>
                         <th>Color</th>
+                        <th>Contact</th>
                         <th>Action</th> <!-- Delete button Column -->
                     </tr>
                 </thead>
@@ -134,10 +146,13 @@
         <a href="../index.html" class="btn btn-light">Back to Home</a>
     </footer>
 
-    <!-- jQuery -->
+<!-- I included jQuery here to simplify DOM manipulation, event handling, and AJAX requests in my project -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- JavaScript -->
-    <script src="../assets/js/register.js"></script>
-    <script src="../assets/js/services.js"></script>
+
+<!-- I'm using register.js for handling registration-related functionality like form validation and user input -->
+<script src="../assets/js/register.js"></script>
+
+<!-- services.js handles various services-related features like making API calls and processing data -->
+<script src="../assets/js/services.js"></script>
 </body>
 </html>

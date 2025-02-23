@@ -48,6 +48,12 @@ p {
     border-radius: 6px;
 }
 
+/* Pet Count Styling */
+#petCount {
+    color: green;
+    font-weight: bold;
+}
+
 /* Table Styling */
 table {
     width: 100%;
@@ -80,6 +86,73 @@ tr:nth-child(even) {
     display: inline-flex;
     justify-content: center;
     align-items: center;
+}
+
+
+/* 🔹 Register Pet Button */
+#addPetBtn {
+    background-color: #0303AB;
+    color: white;
+    padding: 12px 30px; /* Adjusted padding */
+    font-size: 16px;
+    width: auto;
+    min-width: 180px;
+    height: 50px;
+    white-space: nowrap;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* 🔹 Register Pet Button Hover */
+#addPetBtn:hover {
+    background-color: #CA09E8;
+}
+
+/* 🔹 Update Pet Button */
+#updatePetButton {
+    background-color: #17a2b8;
+    color: white;
+    padding: 12px 30px;
+    font-size: 16px;
+    width: auto;
+    min-width: 180px;
+    height: 50px;
+    white-space: nowrap;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.2;
+    display: none; /* Hidden by default */
+}
+
+/* 🔹 Update Pet Button Hover */
+#updatePetButton:hover {
+    background-color: #138496;
+}
+
+/* Align the buttons in the form */
+.col-12.text-center {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Space between buttons */
+}
+
+/* Optional: To ensure buttons don't shrink */
+#addPetBtn, #updatePetButton {
+    flex-grow: 1;
+    max-width: 250px; /* Optional: max-width to avoid too large buttons */
 }
 
 /* 🔹 Edit & Delete Buttons - Same Size */

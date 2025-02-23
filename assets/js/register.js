@@ -22,7 +22,7 @@ const petSalon = {
 };
 
 // 🔹 I use a constructor function to ensure that all pets follow the same structure
-function Pet(firstName, lastName, age, gender, breed, category, service, type, color) {
+function Pet(firstName, lastName, age, gender, breed, category, service, type, color, phoneNumber) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.age = age;
@@ -32,6 +32,7 @@ function Pet(firstName, lastName, age, gender, breed, category, service, type, c
     this.service = service;
     this.type = type;
     this.color = color;
+    this.phoneNumber = phoneNumber; // Add phone number
 }
 
 // 🔹 I created this function to save my pets to localStorage
@@ -95,15 +96,16 @@ document.getElementById("petForm").addEventListener("submit", function (event) {
     const service = document.getElementById("petService").value;
     const type = document.getElementById("petType").value;
     const color = document.getElementById("petColor").value.trim();
+    const phoneNumber = document.getElementById("petPhoneNumber").value.trim();
 
-    // 🔹 I added validation to ensure all fields are properly filled
-    if (firstName === "" || lastName === "" || isNaN(age) || age <= 0 || breed === "" || service === "" || color === "") {
-        showNotification("All fields are required, and age must be a valid number.", "danger");
-        return;
-    }
+// 🔹 I added validation to ensure all fields are properly filled
+if (firstName === "" || lastName === "" || isNaN(age) || age <= 0 || breed === "" || service === "" || color === "" || phoneNumber === "") {
+    showNotification("All fields are required, and age must be a valid number.", "danger");
+    return;
+}
 
     // 🔹 I create a new Pet object using the constructor
-    const newPet = new Pet(firstName, lastName, age, gender, breed, category, service, type, color);
+    const newPet = new Pet(firstName, lastName, age, gender, breed, category, service, type, color, phoneNumber);
     petSalon.pets.push(newPet); // I add the new pet to my pets array
 
     // 🔹 I save the updated pets list to localStorage
@@ -147,6 +149,7 @@ function displayRegisteredPets() {
                 <td>${pet.service}</td>
                 <td>${pet.type}</td>
                 <td>${pet.color}</td>
+                <td>${pet.phoneNumber || 'N/A'}</td> <!-- Ensure phone number is displayed -->
                 <td>
                     <button class="btn btn-warning editPet" data-index="${index}">Edit</button>
                     <button class="btn btn-danger deletePet" data-index="${index}">Delete</button>
@@ -192,6 +195,33 @@ function deletePet(index) {
     petSalon.pets.splice(index, 1);
     savePetsToLocalStorage();
     displayRegisteredPets();
+}
+// 🔹 This function edits a pet and updates localStorage
+function editPet(index) {
+    const pet = petSalon.pets[index];
+
+    // Fill the form with the current pet's data
+    document.getElementById("petFirstName").value = pet.firstName;
+    document.getElementById("petLastName").value = pet.lastName;
+    document.getElementById("petAge").value = pet.age;
+    document.getElementById("petGender").value = pet.gender;
+    document.getElementById("petBreed").value = pet.breed;
+    document.getElementById("serviceCategory").value = pet.category;
+    document.getElementById("petService").value = pet.service;
+    document.getElementById("petType").value = pet.type;
+    document.getElementById("petColor").value = pet.color;
+    document.getElementById("petPhoneNumber").value = pet.phoneNumber; // Ensure the phone number field is populated
+
+    // Add a hidden input to keep track of the pet's index (for later updating)
+    const petIndexInput = document.getElementById("petIndex");
+    if (!petIndexInput) {
+        const hiddenIndexInput = document.createElement("input");
+        hiddenIndexInput.type = "hidden";
+        hiddenIndexInput.id = "petIndex";
+        hiddenIndexInput.name = "petIndex";
+        document.getElementById("petForm").appendChild(hiddenIndexInput);
+    }
+    document.getElementById("petIndex").value = index;
 }
 
 // ✅ Call function on page load to load services into dropdown
