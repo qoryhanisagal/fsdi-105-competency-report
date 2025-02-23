@@ -24,9 +24,15 @@ Groomi by Descoteaux is a **pet salon management system** that allows users to *
 │   ├── 📁 css
 │   │   ├── index.css
 │   │   ├── register.css
+│   │   ├── services.css
 │   ├── 📁 js
 │   │   ├── index.js
 │   │   ├── register.js
+│   │   ├── services.js
+├── 📁 img
+├── 📁 pages
+│   │   ├── register.html
+│   │   ├── services.html
 ├── index.html
 ├── register.html
 ├── README.md
